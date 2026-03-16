@@ -1,0 +1,91 @@
+import numpy as np
+import math
+import pandas as pd
+a21 = 2
+a31 = 3
+a41 = 6
+a51 = 0.3
+a32 = 9
+a42 = 1
+a52 = 2
+a43 = 2.5
+a53 = 5
+a44 = 3.25
+a54 = 0.25
+
+def summs(a):
+    l = [0] * len(a[1])
+    for i in range(len(a)):
+        for j in range(len(a[1])):
+            column = j
+            l[column] += a[i][j]
+    return l
+
+def delim(a, l):
+    del_a = a
+    for i in range(len(a)):
+        for j in range(len(a[1])):
+            column = j
+            del_a[i][j] = round(a[i][j] / l[column], 2)
+    return del_a
+
+def sr_znach(a):
+    sr = [0] * len(a[1])
+    for i in range(len(a)):
+        sr[i] = round(sum(a[i]) / len(a[i]), 2)
+    return sr
+
+def preobr(a):
+    su = summs(a)
+    del_a = delim(a, su)
+    sr = sr_znach(del_a)
+    return sr
+
+matrix_criteria = np.array([[1, a21, a31, a41, a51],
+                            [round(1/a21, 2), 1, a32, a42, a52],
+                            [round(1/a31, 2), round(1/a32, 2), 1, a43, a53,],
+                            [round(1/a41, 2), round(1/a42, 2), round(1/a43, 2), 1, a54],
+                            [round(1/a51,), round(1/a52, 2), round(1/a53, 2), round(1/a54, 2), 1]])
+
+price21 = 2
+price31 = 0.5
+price32 = 3
+matrix_price = np.array([[1, price21, price31],
+                         [1/price21, 1, price32],
+                         [1/price31, 1/price32, 1]])
+din21 = 1
+din31 = 3
+din32 = 3
+matrix_dinner = np.array([[1, din21, din31],
+                         [1/din21, 1, din32],
+                         [1/din31, 1/din32, 1]])
+dis21 = 3
+dis31 = 4
+dis32 = 0.75
+matrix_distance = np.array([[1, dis21, dis31],
+                            [1/dis21, 1, dis32],
+                            [1/dis31, 1/dis32, 1]])
+des21 = 4
+des31 = 2
+des32 = 0.6
+matrix_design = np.array([[1, des21, des31],
+                          [1/des21, 1, des32],
+                          [1/des31, 1/des32, 1]])
+pro21 = 3
+pro31 = 6
+pro32 = 0.2
+matrix_professor = np.array([[1, pro21, pro31],
+                             [1/pro21, 1, pro32],
+                             [1/pro31, 1/pro32, 1]])
+
+sr_price = preobr(matrix_price)
+sr_dinner = preobr(matrix_dinner)
+sr_distance = preobr(matrix_distance)
+sr_design = preobr(matrix_design)
+sr_professor = preobr(matrix_professor)
+all_sr = np.array([sr_price, sr_design, sr_professor, sr_dinner, sr_distance])
+sr_krit = np.array(preobr(matrix_criteria))
+
+# print(all_sr)
+# print(sr_krit)
+print(sr_krit @ all_sr)main
